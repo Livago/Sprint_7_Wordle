@@ -7,6 +7,8 @@ import java.util.Random;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.dictionary.WordleDictionary;
 import ru.yandex.practicum.dictionary.WordleDictionaryLoader;
@@ -22,6 +24,7 @@ class WordleTest {
     }
 
     @Test
+    @DisplayName("Нормализовать слова и отфильтровать словарь")
     void normalizesAndFiltersDictionary() throws Exception {
         WordleDictionary dictionary = dictionary();
         assertTrue(dictionary.contains("ёжики"));
@@ -30,6 +33,7 @@ class WordleTest {
     }
 
     @Test
+    @DisplayName("Сравнить введённое слово с правильным ответом")
     void comparesWords() {
         assertEquals("+++++", WordleDictionary.compare("герой", "герой"));
         assertEquals("+^-^-", WordleDictionary.compare("гонец", "герой"));
@@ -37,6 +41,7 @@ class WordleTest {
     }
 
     @Test
+    @DisplayName("Не тратить попытку при некорректном ходе")
     void invalidMoveDoesNotSpendAttempt() throws Exception {
         WordleGame game = new WordleGame(dictionary(), "герой");
         assertThrows(InvalidWordLengthException.class, () -> game.makeMove("кот"));
@@ -44,6 +49,7 @@ class WordleTest {
     }
 
     @Test
+    @DisplayName("Перевести игру в состояние победы после правильного ответа")
     void winChangesState() throws Exception {
         WordleGame game = new WordleGame(dictionary(), "герой");
         GuessResult result = game.makeMove("ГЕРОЙ");
@@ -53,6 +59,7 @@ class WordleTest {
     }
 
     @Test
+    @DisplayName("Завершить игру с помощью совместимых автоматических подсказок")
     void hintsAreCompatibleAndCanFinishGame() throws Exception {
         WordleGame game = new WordleGame(dictionary(), "герой", new Random(1), null);
         while (!game.isFinished()) {
@@ -65,6 +72,7 @@ class WordleTest {
     }
 
     @Test
+    @DisplayName("Загрузить словарь в UTF-8, нормализовать и отфильтровать слова")
     void loaderReadsUtf8NormalizesAndFilters() throws Exception {
         Path file = Files.createTempFile("wordle-dictionary", ".txt");
         try {
@@ -78,6 +86,7 @@ class WordleTest {
     }
 
     @Test
+    @DisplayName("Отклонить пустой или отсутствующий файл словаря")
     void loaderRejectsEmptyAndMissingDictionary() throws Exception {
         Path empty = Files.createTempFile("wordle-empty", ".txt");
         try {
@@ -90,6 +99,7 @@ class WordleTest {
     }
 
     @Test
+    @DisplayName("Перевести игру в состояние поражения после шестого неверного хода")
     void sixthValidWrongMoveLosesGame() throws Exception {
         WordleGame game = new WordleGame(dictionary(), "герой");
         for (int i = 0; i < 6; i++) game.makeMove("гонец");

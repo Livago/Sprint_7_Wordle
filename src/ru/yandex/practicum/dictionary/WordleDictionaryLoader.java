@@ -27,15 +27,6 @@ public final class WordleDictionaryLoader {
         this.log = log;
     }
 
-    public WordleDictionary load(String fileName) throws DictionaryException {
-        if (fileName == null || fileName.trim().isEmpty()) {
-            throw new DictionaryNotFoundException("Путь к словарю не указан");
-        }
-
-        Path path = Path.of(fileName);
-        return load(path);
-    }
-
     public WordleDictionary load(Path path) throws DictionaryException {
         if (path == null) {
             throw new DictionaryNotFoundException("Путь к словарю не указан");
@@ -76,11 +67,6 @@ public final class WordleDictionaryLoader {
         }
 
         return lines;
-    }
-
-    public WordleDictionary loadDictionary(String fileName)
-            throws DictionaryException {
-        return load(fileName);
     }
 
     private void writeToLog(String message, Throwable error) {

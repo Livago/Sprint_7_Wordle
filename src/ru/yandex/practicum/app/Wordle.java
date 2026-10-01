@@ -11,6 +11,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 import java.util.Scanner;
 
 /**
@@ -45,7 +46,7 @@ public final class Wordle {
     static void run(String dictionaryFile, PrintWriter log) {
         try {
             WordleDictionaryLoader loader = new WordleDictionaryLoader(log);
-            WordleDictionary dictionary = loader.load(dictionaryFile);
+            WordleDictionary dictionary = loader.load(Path.of(dictionaryFile));
             WordleGame game = new WordleGame(dictionary, log);
 
             play(game, log);
@@ -121,13 +122,8 @@ public final class Wordle {
     }
 
     private static String formatAttemptsLeft(int attempts) {
-        if (attempts == 1) {
-            return "Осталась 1 попытка";
-        }
-        if (attempts >= 2 && attempts <= 4) {
-            return "Осталось " + attempts + " попытки";
-        }
-        return "Осталось " + attempts + " попыток";
+        String res = "Осталось " + attempts + " попыт";
+        return  (attempts <= 4) ? res + "ки" : res + "ок";
     }
 
     private static void logError(PrintWriter log, String message, Throwable error) {
